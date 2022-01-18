@@ -1,24 +1,8 @@
 <template>
   <ul>
-    <li class="active">
-      <p>猜你喜欢</p>
-      <p><span>精选好货</span></p>
-    </li>
-    <li>
-      <p>限时抢购</p>
-      <p><span>抢</span></p>
-    </li>
-    <li>
-      <p>超级划算</p>
-      <p><span>实惠直达</span></p>
-    </li>
-    <li>
-      <p>本地生鲜</p>
-      <p><span>在地直采</span></p>
-    </li>
-    <li>
-      <p>人气</p>
-      <p><span>大家在买</span></p>
+    <li v-for="item,index in tabList" :key="index" @click="clickFn(index)" :class="{active: index === curindex}">
+      <p>{{item.tit}}</p>
+      <p><span>{{item.subTit}}</span></p>
     </li>
   </ul>
 </template>
@@ -26,7 +10,43 @@
 <script>
 export default {
   name: "CenterNavbar",
-  methods: {},
+  props: {
+    curindex: {
+      type: Number,
+      default: 0,
+    }
+  },
+  data() {
+    return {
+      tabList: [
+        {
+          tit: "猜你喜欢",
+          subTit: "精选好货"
+        },
+        {
+          tit: "限时抢购",
+          subTit: "抢"
+        },
+        {
+          tit: "超级划算",
+          subTit: "实惠直达"
+        },
+        {
+          tit: "本地生鲜",
+          subTit: "在地直采"
+        },
+        {
+          tit: "人气",
+          subTit: "大家在买"
+        },
+      ]
+    }
+  },
+  methods: {
+    clickFn(index) {
+      this.$emit("centerNavBarFn",index)
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>

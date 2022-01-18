@@ -13,7 +13,7 @@
         @click.stop="subFn(obj)"
         >-</span
       >
-      <span class="num" v-show="getNum(obj)">{{ getNum(obj) }}</span>
+      <span class="num" v-show="getNum(obj)" >{{ getNum(obj) }}</span>
       <span class="add btn" @click.stop="addFn(obj)">+</span>
     </div>
   </div>
@@ -26,7 +26,8 @@ export default {
   name: "GoodsItem",
   props: ["obj"],
   mixins:[mixin],
-  methods: {},
+  methods: {
+  },
 };
 </script>
 <style lang="scss" scoped>

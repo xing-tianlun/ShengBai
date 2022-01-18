@@ -9,7 +9,7 @@
         </div>
       </template>
     </HeadBar>
-    <ScrollRow class="scrollRow" ref="scrollRow" :width="scrollRowW">
+    <ScrollRow class="scrollRow" ref="scrollRow" :width="scrollRowW" :click="true">
       <ul v-if="goodsList">
         <li
           @click="typeTab(index)"
@@ -111,6 +111,7 @@ export default {
   },
   methods: {
     typeTab(index) {
+      console.log(111);
       this.typeIndex = index;
     },
     getTypeTitle(index) {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <keep-alive>
-      <router-view class="view" @tabChange="tabChange" />
+      <router-view class="view"  />  <!-- @tabChange="tabChange" -->
     </keep-alive>
     <Tabbar class="tabbar">
       <tabbar-item
@@ -58,20 +58,28 @@ export default {
       if (this.$route.path != "/main/info")
         if (index === 3) this.$router.push("/main/info");
     },
-    tabChange(index) {
-      this.tabIndex = index
-    }
+    // tabChange(index) {
+    //   this.tabIndex = index;
+    // },
+    isTab() {
+      if (this.$route.path === "/main/home") {
+        this.tabIndex = 0;
+      } else if (this.$route.path === "/main/classify") {
+        this.tabIndex = 1;
+      } else if (this.$route.path === "/main/shopcar") {
+        this.tabIndex = 2;
+      } else if (this.$route.path === "/main/info") {
+        this.tabIndex = 3;
+      }
+    },
   },
   mounted() {
-    if (this.$route.path === "/main/home") {
-      this.tabIndex = 0;
-    } else if (this.$route.path === "/main/classify") {
-      this.tabIndex = 1;
-    } else if (this.$route.path === "/main/shopcar") {
-      this.tabIndex = 2;
-    } else if (this.$route.path === "/main/info") {
-      this.tabIndex = 3;
-    }
+    this.isTab();
+  },
+  watch: {
+    $route() {
+      this.isTab();
+    },
   },
 };
 </script>

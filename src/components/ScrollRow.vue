@@ -17,9 +17,15 @@ export default {
     // list: {
     //   default: 0,
     // },
+    click: {
+      default: false
+    },
     width: {
       default: 0,
     },
+    momentum: {
+      default: false
+    }
   },
   data() {
     return {
@@ -36,8 +42,9 @@ export default {
     this.scroll = new BScroll(this.$refs.wrapper, {
       scrollX: true, // 纵向滚动
       scrollY: false,
-      click: true,
+      click: this.click,
       probeType: 3,
+      momentum: this.momentum,
     });
   },
   watch: {

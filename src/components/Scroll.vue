@@ -13,18 +13,14 @@ import PullUp from "@better-scroll/pull-up";
 BScroll.use(PullUp);
 export default {
   name: "Scroll",
-  // props: {
-  //   index: {
-  //     default: 0,
-  //   },
-  //   list: {
-  //     default: 0,
-  //   },
-  // },
   props: {
     pullUp: {
       type: Boolean,
       default: false,
+    },
+    click: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -44,7 +40,7 @@ export default {
   mounted() {
     this.scroll = new BScroll(this.$refs.wrapper, {
       scrollY: true, // 纵向滚动
-      click: true,
+      click: this.click,
       probeType: 3,
       pullUpLoad: this.pullUp,
     });

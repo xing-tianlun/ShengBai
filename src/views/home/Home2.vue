@@ -20,13 +20,11 @@
       ref="scroll"
       :pullUp="true"
       @pullingUp="loadMore"
-      :click="true"
     >
       <BannerImg>
         <img src="../../assets/img/home_01.png" alt="" />
       </BannerImg>
       <Promise />
-      <!-- <ClassifyList :goodsList="goodsList" :typeList="typeList" /> -->
       <div class="classify">
         <ul>
           <li
@@ -45,60 +43,30 @@
         <img src="../../assets/img/home_active_01.png" alt="" />
       </BannerImg>
       <ScrollRow class="scrollRow" ref="scrollRow" :width="1225">
-        <CenterNavbar
-          ref="centerNavbar"
-          @centerNavBarFn="centerNavBarFn"
-          :curindex="conTabIndex"
-        />
+        <CenterNavbar />
       </ScrollRow>
-      <ScrollRow
-        class="scrollRowCon"
-        ref="scrollRowCon"
-        :momentum="false"
-        :width="3750"
-        :click="false"
-      >
-        <Scroll
-          v-for="(item, index) in 5"
-          :key="index"
-          ref="itemScroll"
-          class="itemScroll"
-          :click="false"
-        >
-          <!-- <ul>
-            <li v-for="(items, indexs) in 50" :key="indexs">{{ index }}</li>
-          </ul> -->
-          <div>
-            <BannerImg>
-              <img src="../../assets/img/home_active_02.png" alt="" />
-            </BannerImg>
-            <div class="goodsList">
-              <GoodsItem
-                v-for="(item, index) in goods"
-                :obj="item"
-                :key="index"
-              />
-            </div>
-            <div class="pullup-tips">
-              <div v-if="!isPullUpLoad" class="before-trigger">
-                <span class="pullup-txt">Pull up and load more</span>
-              </div>
-              <div v-else class="after-trigger">
-                <span class="pullup-txt">Loading...</span>
-              </div>
-            </div>
-          </div>
-        </Scroll>
-      </ScrollRow>
+      <BannerImg>
+        <img src="../../assets/img/home_active_02.png" alt="" />
+      </BannerImg>
+      <div class="goodsList">
+        <GoodsItem v-for="(item, index) in goods" :obj="item" :key="index" />
+      </div>
+      <div class="pullup-tips">
+        <div v-if="!isPullUpLoad" class="before-trigger">
+          <span class="pullup-txt">Pull up and load more</span>
+        </div>
+        <div v-else class="after-trigger">
+          <span class="pullup-txt">Loading...</span>
+        </div>
+      </div>
     </Scroll>
     <ScrollRow
       class="scrollRow scrollRow2"
       ref="scrollRow2"
       :class="{ active2: isScrollRow }"
       :width="1225"
-      :click="true"
     >
-      <CenterNavbar @centerNavBarFn="centerNavBarFn" :curindex="conTabIndex" />
+      <CenterNavbar />
     </ScrollRow>
   </div>
 </template>
@@ -169,7 +137,6 @@ export default {
       page: 0,
       limit: 4,
       isPullUpLoad: true,
-      conTabIndex: 0,
     };
   },
   components: {
@@ -187,7 +154,7 @@ export default {
   methods: {
     goClassify(index) {
       this.$router.push({ name: "Classify", params: { type: index } });
-      // this.$emit("tabChange", 1);
+      this.$emit("tabChange", 1);
     },
     searchFn() {
       this.$router.push("/search");
@@ -195,6 +162,7 @@ export default {
     loadMore() {
       // 上拉钩子触发的函数，重新新的商品数据，加入到 goods 中
       this.getGoods();
+      this.$refs.scroll.finishPullUp();
     },
     async getGoods() {
       // 通过参数分次请求展示商品数据
@@ -209,14 +177,6 @@ export default {
           this.goods.push(...res.data);
         });
       this.page++;
-    },
-    // 中间导航栏的点击事件，并切换下方商品
-    centerNavBarFn(index) {
-      this.conTabIndex = index;
-      this.$refs.scrollRowCon.scroll.scrollToElement(
-        this.$refs.itemScroll[index].$el,
-        200
-      );
     },
   },
   computed: {
@@ -262,19 +222,6 @@ export default {
       });
       // 初始化首页展示商品前几条
       this.getGoods();
-
-      this.$refs.scrollRowCon.scroll.on("scrollEnd", (pos) => {
-        let index = Math.round(Math.abs(pos.x) / 750);
-        this.conTabIndex = index;
-        this.$refs.scrollRowCon.scroll.scrollToElement(
-          this.$refs.itemScroll[index].$el,
-          200
-        );
-        this.$refs.scrollRow.scroll.scrollToElement(
-          this.$refs.centerNavbar.$el.children[index],
-          200
-        );
-      });
     }, 100);
   },
   updated() {
@@ -374,16 +321,6 @@ $green: #a6b620;
     background: #f6f6f6;
     padding: 0.2rem 0;
   }
-}
-/deep/.scrollRowCon {
-  .content {
-    display: flex;
-  }
-}
-.itemScroll {
-  width: calc(100vw);
-  margin-top: 0.133333rem;
-  padding: 0.266667rem 0 0 0;
 }
 
 .pullup-tips {
